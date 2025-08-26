@@ -7,23 +7,19 @@
 # @lc code=start
 class Solution:
     def getAverages(self, nums: list[int], k: int) -> list[int]:
-        prefix_sum = []
+        curr_sum = 0
         n = len(nums)
-        op = [-1 for i in range(n)]
-        prefix_sum.append(nums[0])
-        for i in range(1,n):
-            prefix_sum.append(prefix_sum[i - 1] + nums[i])
-        
-        a = 0
-        b = 0
-        for i in range(n):
-            if i - k >= 0 and i + k <= n - 1:
-                op[i] = (prefix_sum[i+k] - b)// (2*k + 1)
-                if a <= n-1:
-                    b = prefix_sum[a] 
-                a += 1
-
-        return op
+        result = [-1 for i in range(n)]
+        if k == 0:
+            return nums
+        left = 0
+        for right in range(n):
+            curr_sum += nums[right]
+            if right >= 2*k:
+                result[right-k] = curr_sum // (2*k + 1)
+                curr_sum -= nums[left]
+                left+= 1
+        return result
 
 # @lc code=end
 
