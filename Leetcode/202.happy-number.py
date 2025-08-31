@@ -15,12 +15,16 @@ class Solution:
         return total
 
     def isHappy(self, n: int) -> bool:
-        visited = set() #using hash, O(n) space complexity
-        while n not in visited:
-            if n == 1:
+        slow = n
+        fast = n
+        while True:
+
+            slow = self.sum_of_squares(slow)
+            fast = self.sum_of_squares(self.sum_of_squares(fast))
+            if slow == 1 or fast == 1:
                 return True
-            visited.add(n)
-            n = self.sum_of_squares(n)
+            if slow == fast:
+                return False
         return False
     
         
