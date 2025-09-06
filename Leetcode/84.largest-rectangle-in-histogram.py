@@ -8,18 +8,20 @@
 class Solution:
     def largestRectangleArea(self, heights: List[int]) -> int:
         area = 0
-
-        #brute force: O(n^2)
-        for i in range(len(heights)):
-            height = heights[i]
-            left = i
-            right = i
-            while left > 0 and heights[left -1] >= height:
-                left -= 1 
-            while right < len(heights)-1  and heights[right +1] >= height:
-                right += 1 
-            width = right - left + 1
-            area = max(area, width * height)
+        #monotonic stack: O(n)
+        stack = [-1]
+        for i,h in enumerate(heights):
+            while stack[-1] != -1 and heights[stack[-1]] > h:
+                height = heights[stack.pop()]
+                width = i - stack[-1] - 1
+                area = max(area, height * width)
+            stack.append(i)
+        n = len(heights)
+        while stack[-1] != -1:
+            height = heights[stack.pop()]
+            width = n - stack[-1] - 1
+            area = max(area, height * width)
+            
         return area
         
 # @lc code=end
