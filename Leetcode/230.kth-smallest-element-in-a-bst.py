@@ -13,20 +13,21 @@
 #         self.right = right
 class Solution:
     def kthSmallest(self, root: Optional[TreeNode], k: int) -> int:
-        heap =  []
-        def bfs(node):
-            if node:
-                if len(heap) < k:
-                    heapq.heappush(heap,-node.val)
-                elif -node.val > heap[0]:
-                    heapq.heappop(heap)
-                    heapq.heappush(heap,-node.val)
-                if not node.left and not node.right:
-                    return 
-                bfs(node.left)
-                bfs(node.right)
-        bfs(root)
-        return -heap[0]
+        ans = None
+        count = 0
+        def inorder(node):
+            nonlocal ans,count
+            if not node or ans is not None:
+                return
+            inorder(node.left)
+            count += 1
+            if count == k:
+                ans = node.val
+                return
+            inorder(node.right)
+        inorder(root)
+
+        return ans
         
 # @lc code=end
 
