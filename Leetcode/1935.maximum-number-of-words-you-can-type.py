@@ -8,14 +8,14 @@
 class Solution:
     def canBeTypedWords(self, text: str, brokenLetters: str) -> int:
         #daily question: 2025/09/15
-        words = text.split(' ')
-        count = len(words)
-        for word in words:
-            for c in word:
-                if c in brokenLetters:
-                    count -= 1
-                    break
-        return count
+        broken_set = set(brokenLetters)
+        #python one liner: equivalent to this
+        # count = 0
+        # for word in text.split():
+        #     if all(c not in broken_set for c in word):
+        #     count += 1
+        # return count
+        return sum(all(c not in broken_set for c in word) for word in text.split())
         
 # @lc code=end
 
